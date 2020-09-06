@@ -21,6 +21,6 @@ server.use(function (err, req, res, next) {
   res.json({ ...err, message: err.message });
 });
 
-server.listen(process.env.APP_PORT, () => {
-  console.log('listen on: ' + process.env.APP_PORT)
+server.listen(process.env.PORT, () => {
+  console.log('listen on: ' + process.env.PORT)
 })
