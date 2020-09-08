@@ -25,6 +25,7 @@ routes.use(optionalAuthMiddleware);
 
 routes.get('/devs', DevController.index)
 routes.get('/channels', ChannelController.index)
+routes.get('/channels/*', ChannelController.show)
 
 routes.get('/feed/trending', TrendingController.index)
 

@@ -6,30 +6,23 @@ const Dev = require('../models/Dev')
 
 module.exports = {
   async index(req, res) {
-    //const { authorization: user } = req.headers
-
-    /*let channels = []
-
-    if (isUuid(user)) {
-      console.log('req-id', user)
-      const loggedDev = await Dev.findById(user)
-
-      if (!loggedDev) {
-        throw new Error(`user ${user} not found`)
-      }
-
-      channels = await Channel.find({
-        $and: [
-          { _id: { $nin: loggedDev.likes } },
-          { _id: { $nin: loggedDev.deslikes } },
-        ],
-      })
-    }
-    else {*/
     const channels = await Channel.find()
-    //}
 
     return res.json(channels)
+  },
+
+  async show(req, res) {
+    const { 0: search_query } = req.params;
+    const filter = {
+      $or: [
+        { name: new RegExp(search_query) },
+        { link: new RegExp(search_query) }
+      ]
+    };
+
+    const channel = await Channel.findOne(filter)
+
+    return res.json(channel)
   },
 
   async store(req, res) {
