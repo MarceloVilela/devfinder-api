@@ -5,7 +5,7 @@ module.exports = {
   async index(req, res) {
     const { userId } = req;
 
-    let videos = [];
+    let result = null;
 
     if (userId) {
       const loggedDev = await Dev.findById(userId)
@@ -15,18 +15,31 @@ module.exports = {
       }
 
       console.log(`trending de ${loggedDev.name}, ignora os canais ${loggedDev.ignore.join(',')}`)
-      videos = await Video
-      .find({
+      const query = {
         $and: [
           { channel_id: { $nin: loggedDev.ignore } },
         ],
-      })
-      .sort({createdAt: -1});
+      };
+      const options = {
+        sort: { createdAt: -1 },
+        limit: 30,
+      };
+      result = await Video.paginate(
+        query,
+        options
+      );
     }
     else {
-      videos = await Video.find().sort({createdAt: -1});
+      const options = {
+        sort: { createdAt: -1 }
+      };
+      result = await Video.paginate(
+        {},
+        options
+      );
     }
 
-    return res.json(videos)
+    const { docs, totalDocs: total, limit: itemsPerPage } = result;
+    return res.json({ docs, total, itemsPerPage })
   }
 }

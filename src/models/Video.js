@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 /*
  * https://github.com/kihapper/TheirTube/blob/master/src/theirtube.js#L172
@@ -36,4 +37,6 @@ const VideoSchema = new Schema({
   timestamps: true,
 })
 
-module.exports = model('Video', VideoSchema)
+VideoSchema.plugin(mongoosePaginate);
+ 
+module.exports = model('Video',  VideoSchema);
