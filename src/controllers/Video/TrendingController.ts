@@ -12,7 +12,7 @@ export default {
     const options = {
       sort: { createdAt: -1 },
       limit: 30,
-      page: page ? page : 0
+      page: page ? page : 1
     };
 
     if (userId) {
