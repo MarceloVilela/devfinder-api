@@ -1,9 +1,10 @@
-const Video = require('../models/Video');
-const Dev = require('../models/Dev');
+import { Request, Response } from 'express';
+import Video from '../../models/Video';
+import Dev from '../../models/Dev';
 
-module.exports = {
-  async index(req, res) {
-    const { userId } = req;
+export default {
+  async index(req: Request, res: Response) {
+    const { id: userId } = req.user;
 
     const loggedDev = await Dev.findById(userId)
 
@@ -11,7 +12,6 @@ module.exports = {
       throw new Error(`user ${userId} not found`)
     }
 
-    console.log(`trending de ${loggedDev.name}, ignora os canais ${loggedDev.ignore.join(',')}`)
     const videos = await Video
     .find({
       $and: [

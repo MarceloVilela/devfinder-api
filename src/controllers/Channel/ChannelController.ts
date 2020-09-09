@@ -1,17 +1,17 @@
-const axios = require('axios')
-const { validate: isUuid } = require('uuid');
+import { Request, Response } from 'express';
+import axios from 'axios';
 
-const Channel = require('../models/Channel')
-const Dev = require('../models/Dev')
+import Channel from '../../models/Channel';
+import Dev from '../../models/Dev'
 
-module.exports = {
-  async index(req, res) {
+export default {
+  async index(req: Request, res: Response) {
     const channels = await Channel.find()
 
     return res.json(channels)
   },
 
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { 0: search_query } = req.params;
     const filter = {
       $or: [
@@ -25,7 +25,7 @@ module.exports = {
     return res.json(channel)
   },
 
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { name, link, userGithub, description, category, tags } = req.body
 
     const channelExists = await Channel.findOne({ name })
@@ -47,7 +47,7 @@ module.exports = {
       { name, link, userGithub, description, category: categoryFormatted, tags }
     )
 
-    const response = await axios.get(`https://api.github.com/users/${username}`)
+    const response = await axios.get(`https://api.github.com/users/${userGithub}`)
     const { name: title, bio, avatar_url: avatar } = response.data
     const dev = await Dev.create(
       { name: title, bio, avatar }

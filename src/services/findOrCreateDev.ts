@@ -1,9 +1,16 @@
-const axios = require('axios')
-const Dev = require('../models/Dev')
+import axios from 'axios';
+import Dev from '../models/Dev';
 
-const create = async ({ user, name, bio, avatar }) => {
+interface User {
+  user: string;
+  name?: string;
+  bio?: string;
+  avatar?: string;
+}
+
+const findOrCreateDev = async ({ user, name = '', bio = '', avatar = '' }: User) => {
   user = user.toLowerCase()
-  
+
   const userExists = await Dev.findOne({ user })
   if (userExists) {
     return userExists
@@ -24,4 +31,4 @@ const create = async ({ user, name, bio, avatar }) => {
   return dev;
 }
 
-module.exports = create;
+export default findOrCreateDev;

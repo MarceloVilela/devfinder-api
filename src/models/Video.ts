@@ -39,4 +39,4 @@ const VideoSchema = new Schema({
 
 VideoSchema.plugin(mongoosePaginate);
  
-module.exports = model('Video',  VideoSchema);
+export default model('Video',  VideoSchema);

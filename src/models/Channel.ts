@@ -1,19 +1,22 @@
-const {Schema, model} = require('mongoose')
+const { Schema, model } = require('mongoose')
 
-const DevSchema = new Schema({
+const ChannelSchema = new Schema({
   name: {
     type: String,
     required: true
   },
-  user: {
+  link: {
     type: String,
     required: true
   },
-  bio: String,
-  avatar: {
+  avatar: String,
+  userGithub: String,
+  description: String,
+  category: {
     type: String,
     required: true
   },
+  tags: [{ type: String }],
   likes: [{
     type: Schema.Types.ObjectId,
     ref: 'Dev',
@@ -21,17 +24,9 @@ const DevSchema = new Schema({
   deslikes: [{
     type: Schema.Types.ObjectId,
     ref: 'Dev',
-  }],
-  follow: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Channel',
-  }],
-  ignore: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Channel',
   }]
 }, {
   timestamps: true,
 })
 
-module.exports = model('Dev', DevSchema)
+export default model('Channel', ChannelSchema)

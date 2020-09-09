@@ -1,19 +1,21 @@
-const express = require('express')
+import express from 'express';
 
-const authMiddleware = require('../middlewares/auth');
-const optionalAuthMiddleware = require('../middlewares/optionalAuth');
-const socialLoginGithub = require('./socialLoginGithub')
+import authMiddleware from '../middlewares/auth';
+import optionalAuthMiddleware from '../middlewares/optionalAuth';
+import socialLoginGithub from './socialLoginGithub';
 
-const DevController = require('../controllers/DevController')
-const ProfileController = require('../controllers/ProfileController')
-const ChannelController = require('../controllers/ChannelController')
-const VideoController = require('../controllers/VideoController');
-const TrendingController = require('../controllers/TrendingController');
-const SubscriptionsController = require('../controllers/SubscriptionsController');
-const LikeController = require('../controllers/LikeController')
-const DislikeController = require('../controllers/DislikeController')
-const FollowController = require('../controllers/FollowController')
-const IgnoreController = require('../controllers/IgnoreController')
+import DevController from '../controllers/Dev/DevController';
+import ProfileController from '../controllers/Dev/ProfileController';
+import LikeController from '../controllers/Dev/LikeController';
+import DislikeController from '../controllers/Dev/DislikeController';
+
+import VideoController from '../controllers/Video/VideoController';
+import TrendingController from '../controllers/Video/TrendingController';
+import SubscriptionsController from '../controllers/Video/SubscriptionsController';
+
+import ChannelController from '../controllers/Channel/ChannelController';
+import FollowController from '../controllers/Channel/FollowController';
+import IgnoreController from '../controllers/Channel/IgnoreController';
 
 const routes = express.Router()
 
@@ -46,4 +48,4 @@ routes.post('/channels', ChannelController.store)
 routes.post('/feed/trending', VideoController.store)
 routes.get('/feed/subscriptions', SubscriptionsController.index)
 
-module.exports = routes
+export default routes

@@ -1,11 +1,12 @@
-const Dev = require('../models/Dev')
+import { Request, Response } from 'express';
+import Dev from '../../models/Dev';
 
-module.exports = {
-  async show(req, res) {
-    const { userId } = req;
-    
+export default {
+  async show(req: Request, res: Response) {
+    const { id: userId } = req.user;
+
     const loggedDev = await Dev.findById(userId)
-    
+
     if (!loggedDev) {
       return res.status(400).json({ error: 'DevProfile not exists' })
     }

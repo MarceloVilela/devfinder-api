@@ -1,9 +1,10 @@
-const Dev = require('../models/Dev')
-const Channel = require('../models/Channel')
+import { Request, Response } from 'express';
+import Dev from '../../models/Dev';
+import Channel from '../../models/Channel';
 
-module.exports = {
-  async store(req, res) {
-    const { userId } = req;
+export default {
+  async store(req: Request, res: Response) {
+    const { id: userId } = req.user;
     const { username } = req.params
 
     const loggedDev = await Dev.findById(userId)

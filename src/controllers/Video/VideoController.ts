@@ -1,8 +1,9 @@
-const Video = require('../models/Video');
-const Channel = require('../models/Channel');
+import { Request, Response } from 'express';
+import Video from '../../models/Video';
+import Channel from '../../models/Channel';
 
-module.exports = {
-  async store(req, res) {
+export default {
+  async store(req: Request, res: Response) {
     const { title, url, channel, channel_url, channel_icon, thumbnail, viewnum, date } = req.body
 
 
