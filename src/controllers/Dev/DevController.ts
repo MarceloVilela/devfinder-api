@@ -5,8 +5,15 @@ import findOrCreateDev from '../../services/findOrCreateDev';
 export default {
   async index(req: Request, res: Response) {
     const { id: userId } = req.user;
+    const { page } = req.query;
 
-    let devs = [];
+    let result = null;
+
+    const options = {
+      sort: { createdAt: -1 },
+      limit: 30,
+      page: page ? page : 1
+    };
 
     if (userId) {
       const loggedDev = await Dev.findById(userId)
@@ -15,19 +22,28 @@ export default {
         throw new Error(`user ${userId} not found`)
       }
 
-      devs = await Dev.find({
+      const query = {
         $and: [
           { _id: { $ne: loggedDev._id } },
           { _id: { $nin: loggedDev.likes } },
           { _id: { $nin: loggedDev.deslikes } },
         ],
-      })
+      };
+
+      result = await Dev.paginate(
+        query,
+        options
+      )
     }
     else {
-      devs = await Dev.find()
+      result = await Dev.paginate(
+        {},
+        options
+      )
     }
 
-    return res.json(devs)
+    const { docs, totalDocs: total, limit: itemsPerPage } = result;
+    return res.json({ docs, total, itemsPerPage })
   },
 
   async store(req: Request, res: Response) {

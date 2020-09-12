@@ -5,21 +5,32 @@ import Dev from '../../models/Dev';
 export default {
   async index(req: Request, res: Response) {
     const { id: userId } = req.user;
+    const { page } = req.query;
 
     const loggedDev = await Dev.findById(userId)
-
     if (!loggedDev) {
       throw new Error(`user ${userId} not found`)
     }
 
-    const videos = await Video
-    .find({
+    const query = {
       $and: [
         { channel_id: { $in: loggedDev.follow } },
       ],
-    })
-    .sort({'createdAt': -1})
+    }
 
-    return res.json(videos)
+    const options = {
+      sort: { createdAt: -1 },
+      limit: 30,
+      page: page ? page : 1
+    };
+
+    const result = await Video
+      .paginate(
+        query,
+        options
+      );
+
+    const { docs, totalDocs: total, limit: itemsPerPage } = result;
+    return res.json({ docs, total, itemsPerPage });
   }
 }

@@ -26,6 +26,7 @@ routes.get('/', (req, res) => {
 routes.use(optionalAuthMiddleware);
 
 routes.get('/devs', DevController.index)
+
 routes.get('/channels', ChannelController.index)
 routes.get('/channels/*', ChannelController.show)
 
@@ -43,9 +44,17 @@ routes.post('/devs/:username/dislikes', DislikeController.store)
 routes.post('/channels/:username/likes', FollowController.store)
 routes.post('/channels/:username/dislikes', IgnoreController.store)
 
+routes.get('/feed/subscriptions', SubscriptionsController.index)
+routes.get('/devs/likes', LikeController.index)
+routes.get('/devs/dislikes', DislikeController.index)
+
+routes.delete('/devs/:username/likes', LikeController.delete)
+routes.delete('/devs/:username/dislikes', DislikeController.delete)
+routes.delete('/channels/:username/likes', FollowController.delete)
+routes.delete('/channels/:username/dislikes', IgnoreController.delete)
+
 routes.post('/devs', DevController.store)
 routes.post('/channels', ChannelController.store)
 routes.post('/feed/trending', VideoController.store)
-routes.get('/feed/subscriptions', SubscriptionsController.index)
 
 export default routes
