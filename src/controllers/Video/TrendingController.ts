@@ -4,7 +4,7 @@ import Dev from '../../models/Dev';
 
 export default {
   async index(req: Request, res: Response) {
-    const { id: userId } = req.user;
+    const userId = req.user?.id;
     const { page } = req.query;
 
     let result = null;

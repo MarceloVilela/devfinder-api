@@ -28,7 +28,17 @@ export default {
   async store(req: Request, res: Response) {
     const { name, link, userGithub, description, category, tags } = req.body
 
-    const channelExists = await Channel.findOne({ name })
+    const nameRegex = new RegExp(name, 'i');
+    const linkRegex = new RegExp(link, 'i');
+
+    const channelExists = await Channel.findOne({
+      $or: [
+        { name: { $regex: nameRegex } },
+        { link: { $regex: linkRegex } }
+      ],
+    })
+
+    return res.json(channelExists);
 
     //remove emoji
     const categoryFormatted = category.category.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
@@ -43,7 +53,7 @@ export default {
       return res.json(channelUpdated)
     }
 
-    const channel = await Dev.create(
+    const channel = await Channel.create(
       { name, link, userGithub, description, category: categoryFormatted, tags }
     )
 
@@ -53,6 +63,6 @@ export default {
       { name: title, bio, avatar }
     )
 
-    return res.json(dev)
+    return res.json(channel)
   }
 }
