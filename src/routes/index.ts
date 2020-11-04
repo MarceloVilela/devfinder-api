@@ -14,6 +14,7 @@ import TrendingController from '../controllers/Video/TrendingController';
 import SubscriptionsController from '../controllers/Video/SubscriptionsController';
 
 import ChannelController from '../controllers/Channel/ChannelController';
+import ChannelRefreshController from '../controllers/Channel/ChannelRefreshController';
 import FollowController from '../controllers/Channel/FollowController';
 import IgnoreController from '../controllers/Channel/IgnoreController';
 
@@ -55,6 +56,7 @@ routes.delete('/channels/:username/dislikes', IgnoreController.delete)
 
 routes.post('/devs', DevController.store)
 routes.post('/channels', ChannelController.store)
+routes.post('/channels/refresh', ChannelRefreshController.store)
 routes.post('/feed/trending', VideoController.store)
 
 export default routes

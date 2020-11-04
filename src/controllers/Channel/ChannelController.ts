@@ -26,7 +26,7 @@ export default {
   },
 
   async store(req: Request, res: Response) {
-    const { name, link, userGithub, description, category, tags } = req.body
+    const { title: name, link, userGithub, description, category, tags, avatar } = req.body
 
     const nameRegex = new RegExp(name, 'i');
     const linkRegex = new RegExp(link, 'i');
@@ -38,14 +38,12 @@ export default {
       ],
     })
 
-    return res.json(channelExists);
-
     //remove emoji
-    const categoryFormatted = category.category.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
+    const categoryFormatted = category.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
 
     if (channelExists) {
       const channelUpdated = Object.assign(channelExists, {
-        name, link, userGithub, description, category: categoryFormatted, tags
+        name, link, userGithub, description, category: categoryFormatted, tags, avatar
       })
 
       await channelUpdated.save()
@@ -54,13 +52,13 @@ export default {
     }
 
     const channel = await Channel.create(
-      { name, link, userGithub, description, category: categoryFormatted, tags }
+      { name, link, userGithub, description, category: categoryFormatted, tags, avatar }
     )
 
     const response = await axios.get(`https://api.github.com/users/${userGithub}`)
-    const { name: title, bio, avatar_url: avatar } = response.data
+    const { name: title, bio, avatar_url } = response.data
     const dev = await Dev.create(
-      { name: title, bio, avatar }
+      { name: title, bio, avatar: avatar_url }
     )
 
     return res.json(channel)
