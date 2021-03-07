@@ -41,6 +41,18 @@ export default {
       { title, url, channel_id, channel, channel_url, channel_icon, thumbnail: thumbnailFormatted, viewnum, date }
     )
 
-    return res.json(video)
-  }
+    return res.json(video);
+  },
+
+  async show(req: Request, res: Response) {
+    const { idYoutubeWatch } = req.params;
+    const filter = {
+      url: new RegExp(idYoutubeWatch)
+    };
+
+    const video = await Video.findOne(filter)
+
+    return res.json(video);
+  },
+
 }

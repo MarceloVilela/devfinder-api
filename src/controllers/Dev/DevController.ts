@@ -46,6 +46,17 @@ export default {
     return res.json({ docs, total, itemsPerPage })
   },
 
+  async show(req: Request, res: Response) {
+    const { username } = req.params;
+    const filter = {
+      user: username
+    };
+
+    const dev = await Dev.findOne(filter)
+
+    return res.json(dev);
+  },
+
   async store(req: Request, res: Response) {
     const { username: user } = req.body
 

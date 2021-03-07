@@ -27,11 +27,13 @@ routes.get('/', (req, res) => {
 routes.use(optionalAuthMiddleware);
 
 routes.get('/devs', DevController.index)
+routes.get('/devs/:username', DevController.show)
 
 routes.get('/channels', ChannelController.index)
 routes.get('/channels/*', ChannelController.show)
 
 routes.get('/feed/trending', TrendingController.index)
+routes.get('/video/:idYoutubeWatch', VideoController.show)
 
 routes.use(socialLoginGithub);
 
