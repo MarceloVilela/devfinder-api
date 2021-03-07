@@ -60,7 +60,7 @@ routes.get('/auth/github/callback',
       expiresIn: authConfig.expiresIn,
     })
 
-    return res.redirect(process.env.APP_WEB_URL + `?id=${id}&token=${token}`)
+    return res.redirect(process.env.APP_WEB_URL + `/login?id=${id}&token=${token}`)
   }
 );
 
