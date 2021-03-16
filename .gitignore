@@ -10,3 +10,5 @@ dist/
 temp/
 tmp/*
 !tmp/.gitkeep
+
+*.txt

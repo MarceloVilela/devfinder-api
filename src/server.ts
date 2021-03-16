@@ -4,6 +4,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import 'express-async-errors';
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../swagger_output.json')
 
 import routes from './routes';
 
@@ -18,7 +20,7 @@ const server = express()
 server.use(cors())
 server.use(express.json())
 
-server.use(routes)
+server.use('/v1/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile, false, { docExpansion: "none", persistAuthorization: true }))
 
 server.use(function (err: ErrorHandler, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
