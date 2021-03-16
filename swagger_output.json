@@ -1,0 +1,983 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DevFinder",
+    "description": "DevFinder api"
+  },
+  "host": "localhost:3333",
+  "basePath": "/v1",
+  "tags": [],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "authorization",
+      "description": "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+      "token": "aaa"
+    }
+  },
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [],
+        "summary": "Get info about app",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AppInfo"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/devs": {
+      "get": {
+        "tags": [
+          "Dev"
+        ],
+        "summary": "Get all devs",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PaginationDev"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Dev"
+        ],
+        "summary": "Create dev",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "username: github username",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "marcelovilela"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Dev adicionado.",
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/devs/{username}": {
+      "get": {
+        "tags": [
+          "Dev"
+        ],
+        "summary": "Gets a dev by username",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/channels": {
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Get all channels",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ArrayOfChannel"
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Create channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "A JSON object containing data for the dev",
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddChannel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Channel"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/channels/{searchQuery}": {
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Get a channel by name or link",
+        "description": "",
+        "parameters": [
+          {
+            "name": "searchQuery",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "name or link of channel to be used as a search"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Channel"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/feed/trending": {
+      "get": {
+        "tags": [
+          "Video"
+        ],
+        "summary": "Get all recents videos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PaginationVideo"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/video/{idYoutubeWatch}": {
+      "get": {
+        "tags": [
+          "Video"
+        ],
+        "summary": "Get a vídeo by the id contained in the link",
+        "description": "",
+        "parameters": [
+          {
+            "name": "idYoutubeWatch",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Youtube video id. Ex: https://www.youtube.com/watch?v=Cz55Jmhfw84 , id: Cz55Jmhfw84"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Video"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "tags": [
+          "Dev"
+        ],
+        "summary": "Returns authenticated user information",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/likes/devs/{username}": {
+      "post": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Add like to dev",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Remove like for dev",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/dislikes/devs/{username}": {
+      "post": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Add dislike to dev",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Remoev dislike for dev",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/likes/channels/{username}": {
+      "post": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Add like to channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Remove like for channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/dislikes/channels/{username}": {
+      "post": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Add dislike to channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Remoev dislike for channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Dev"
+            },
+            "description": "A JSON object containing data from the authenticated user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/likes/devs": {
+      "get": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Get devs marked whit like",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ArrayOfDev"
+            },
+            "description": "A JSON object containing array of devs marked whit like by authenticated user"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/dislikes/devs": {
+      "get": {
+        "tags": [
+          "Dev.likes|dislikes"
+        ],
+        "summary": "Get devs marked whit dislike",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ArrayOfDev"
+            },
+            "description": "A JSON object containing array of devs marked whit dislike by authenticated user"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/feed/subscriptions": {
+      "get": {
+        "tags": [
+          "Video"
+        ],
+        "summary": "Get videos related to the channels you are subscribed",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PaginationVideo"
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/channels/refresh": {
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Synchronize channels",
+        "description": "Consult the list of channels, check which ones are not yet registered, then register",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ArrayOfChannelName"
+            },
+            "description": "Array with the names of the channels that were added"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/video": {
+      "post": {
+        "tags": [
+          "Video"
+        ],
+        "summary": "Create vídeo",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "A JSON object containing data for the dev",
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddVideo"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Video"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Dev": {
+      "type": "object",
+      "properties": {
+        "likes": {
+          "type": "array",
+          "example": [
+            "5ee...20d",
+            "5ee...b74"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "deslikes": {
+          "type": "array",
+          "example": [
+            "5ef...d86"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "follow": {
+          "type": "array",
+          "example": [
+            "5ef...2b9"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "ignore": {
+          "type": "array",
+          "example": [
+            "5ef...d7c",
+            "5ef...d8f",
+            "5ef...30b"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "_id": {
+          "type": "string",
+          "example": "5f2...fd1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Marcelo Vilela"
+        },
+        "user": {
+          "type": "string",
+          "example": "marcelovilela"
+        },
+        "bio": {
+          "type": "string",
+          "example": ""
+        },
+        "avatar": {
+          "type": "string",
+          "example": "https://avatars3.githubusercontent.com/u/32023347?v=4"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2020-07-30T19:40:49.524Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-01-05T17:05:08.346Z"
+        },
+        "__v": {
+          "type": "number",
+          "example": 51
+        }
+      }
+    },
+    "ArrayOfDev": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Dev"
+      }
+    },
+    "PaginationDev": {
+      "type": "object",
+      "properties": {
+        "docs": {
+          "$ref": "#/definitions/ArrayOfDev"
+        },
+        "total": {
+          "type": "number",
+          "example": 21
+        },
+        "itemsPerPage": {
+          "type": "number",
+          "example": 30
+        }
+      }
+    },
+    "Channel": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "example": [
+            "javascript",
+            "react",
+            "react native"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "likes": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "deslikes": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "_id": {
+          "type": "string",
+          "example": "5ef...2b8"
+        },
+        "name": {
+          "type": "string",
+          "example": "Rocketseat"
+        },
+        "userGithub": {
+          "type": "string",
+          "example": "rocketseat"
+        },
+        "link": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg"
+        },
+        "description": {
+          "type": "string",
+          "example": "O canal da Rocketseat tá lotado de conteúdo para pessoas desenvolvedoras e ainda tem apoio da plataforma com vários conteúdos de programação gratuitos."
+        },
+        "category": {
+          "type": "string",
+          "example": "Desenvolvimento Front-End "
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2020-06-22T16:58:12.583Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2020-07-24T14:28:15.541Z"
+        },
+        "__v": {
+          "type": "number",
+          "example": 0
+        },
+        "avatar": {
+          "type": "string",
+          "example": "https://yt3.ggpht.com/a/AATXAJwSX58F1bJzQBZYiioJa36NuvznvNpsEVDfmc7qfg=s100-c-k-c0xffffffff-no-rj-mo"
+        }
+      }
+    },
+    "ArrayOfChannel": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Channel"
+      }
+    },
+    "AddChannel": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg"
+        },
+        "title": {
+          "type": "string",
+          "example": "Rocketseat"
+        },
+        "description": {
+          "type": "string",
+          "example": "O canal da Rocketseat tá lotado de conteúdo para pessoas desenvolvedoras e ainda tem apoio da plataforma com vários conteúdos de programação gratuitos."
+        },
+        "tags": {
+          "type": "array",
+          "example": [
+            "javascript",
+            "react",
+            "react native"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "category": {
+          "type": "string",
+          "example": "Desenvolvimento Front-End "
+        }
+      }
+    },
+    "ArrayOfChannelName": {
+      "type": "array",
+      "example": [
+        "edinei.dev",
+        "Uniday Studio"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "Video": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "5f59628da399c000177530a4"
+        },
+        "title": {
+          "type": "string",
+          "example": "Serverless com ReactJS e Next.js na Vercel | Code/Drops #56"
+        },
+        "url": {
+          "type": "string",
+          "example": "https://www.youtube.com/watch?v=Cz55Jmhfw84"
+        },
+        "channel_id": {
+          "type": "string",
+          "example": "5ef0e3248b7eac229c27e2b8"
+        },
+        "channel": {
+          "type": "string",
+          "example": "Rocketseat"
+        },
+        "channel_url": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg"
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "https://i.ytimg.com/vi/Cz55Jmhfw84/hqdefault.jpg?sqp=-oaymwEYCNIBEHZIVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAJKxcxvZ5M93JVuHMYkFF9KWlgnw"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2020-09-09T23:17:33.929Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2020-09-09T23:17:33.929Z"
+        },
+        "__v": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "ArrayOfVideo": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Video"
+      }
+    },
+    "PaginationVideo": {
+      "type": "object",
+      "properties": {
+        "docs": {
+          "$ref": "#/definitions/ArrayOfVideo"
+        },
+        "total": {
+          "type": "number",
+          "example": 1920
+        },
+        "itemsPerPage": {
+          "type": "number",
+          "example": 30
+        }
+      }
+    },
+    "AddVideo": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Serverless com ReactJS e Next.js na Vercel | Code/Drops #56"
+        },
+        "url": {
+          "type": "string",
+          "example": "https://www.youtube.com/watch?v=Cz55Jmhfw84"
+        },
+        "channel": {
+          "type": "string",
+          "example": "Rocketseat"
+        },
+        "channel_url": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg"
+        },
+        "thumbnail": {
+          "type": "string",
+          "example": "https://i.ytimg.com/vi/Cz55Jmhfw84/hqdefault.jpg?sqp=-oaymwEYCNIBEHZIVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAJKxcxvZ5M93JVuHMYkFF9KWlgnw"
+        }
+      }
+    },
+    "AppInfo": {
+      "type": "object",
+      "properties": {
+        "appname": {
+          "type": "string",
+          "example": "DevFinder"
+        }
+      }
+    }
+  }
+}
