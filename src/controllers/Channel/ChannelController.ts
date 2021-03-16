@@ -12,11 +12,11 @@ export default {
   },
 
   async show(req: Request, res: Response) {
-    const { 0: search_query } = req.params;
+    const { searchQuery } = req.params;
     const filter = {
       $or: [
-        { name: new RegExp(search_query) },
-        { link: new RegExp(search_query) }
+        { name: new RegExp(searchQuery) },
+        { link: new RegExp(searchQuery) }
       ]
     };
 
@@ -61,6 +61,6 @@ export default {
       { name: title, bio, avatar: avatar_url }
     )
 
-    return res.json(channel)
+    return res.status(201).json(channel)
   }
 }

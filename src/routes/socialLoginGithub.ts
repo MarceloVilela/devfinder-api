@@ -34,7 +34,7 @@ passport
     new Strategy({
       clientID: String(process.env.GITHUB_CLIENT_ID),
       clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
-      callbackURL: process.env.APP_API_URL + '/auth/github/callback'
+      callbackURL: process.env.APP_API_URL + '/v1/auth/github/callback'
     },
       async function (accessToken, refreshToken, profile, cb) {
         const profileGitHub = profile as ProfileGitHub;
@@ -49,7 +49,11 @@ passport
       }
     ));
 
-routes.get('/auth/github', passport.authenticate('github'));
+routes.get('/auth/github', passport.authenticate('github')
+  // #swagger.ignore = true
+  // #swagger.tags = ['Auth']
+  // #swagger.summary = 'Redirects to social authentication - github'
+);
 
 routes.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
@@ -62,6 +66,9 @@ routes.get('/auth/github/callback',
 
     return res.redirect(process.env.APP_WEB_URL + `/login?id=${id}&token=${token}`)
   }
+  // #swagger.ignore = true
+  // #swagger.tags = ['Auth']
+  // #swagger.summary = 'Handles the response of social authentication - github'
 );
 
 export default routes

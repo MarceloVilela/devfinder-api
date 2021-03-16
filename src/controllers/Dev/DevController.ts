@@ -62,6 +62,6 @@ export default {
 
     const dev = await findOrCreateDev({ user })
 
-    return res.json(dev)
+    return res.status(201).json(dev)
   }
 }

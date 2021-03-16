@@ -41,7 +41,7 @@ export default {
       { title, url, channel_id, channel, channel_url, channel_icon, thumbnail: thumbnailFormatted, viewnum, date }
     )
 
-    return res.json(video);
+    return res.status(201).json(video);
   },
 
   async show(req: Request, res: Response) {

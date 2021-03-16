@@ -22,6 +22,8 @@ server.use(express.json())
 
 server.use('/v1/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile, false, { docExpansion: "none", persistAuthorization: true }))
 
+server.use('/v1', routes)
+
 server.use(function (err: ErrorHandler, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
   res.json({ ...err, message: err.message });
