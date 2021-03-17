@@ -5,12 +5,12 @@
     "title": "DevFinder",
     "description": "DevFinder api"
   },
-  "host": "localhost:3333",
+  "host": "finderdev.herokuapp.com",
   "basePath": "/v1",
   "tags": [],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "securityDefinitions": {
     "apiKeyAuth": {
@@ -45,7 +45,7 @@
         "tags": [
           "Dev"
         ],
-        "summary": "Get all devs",
+        "summary": "Get all devs (whit pagination)",
         "description": "",
         "parameters": [
           {
@@ -131,7 +131,7 @@
         "tags": [
           "Channel"
         ],
-        "summary": "Get all channels",
+        "summary": "Get all channels (whit pagination)",
         "description": "",
         "parameters": [],
         "responses": {
@@ -377,7 +377,7 @@
         "tags": [
           "Dev.likes|dislikes"
         ],
-        "summary": "Remoev dislike for dev",
+        "summary": "Remove dislike for dev",
         "description": "",
         "parameters": [
           {
@@ -505,7 +505,7 @@
         "tags": [
           "Dev.likes|dislikes"
         ],
-        "summary": "Remoev dislike for channel",
+        "summary": "Remove dislike for channel",
         "description": "",
         "parameters": [
           {

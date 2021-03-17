@@ -1,3 +1,4 @@
+require('dotenv').config();
 const swaggerAutogen = require('swagger-autogen')()
 
 const outputFile = './swagger_output.json'
@@ -9,9 +10,9 @@ const doc = {
     title: "DevFinder",
     description: "DevFinder api",
   },
-  host: "localhost:3333",
+  host: process.env.APP_API_HOST,
   basePath: "/v1",
-  schemes: ['http', 'https'],
+  schemes: process.env.APP_API_HOST?.includes('https') ? ['https', 'http'] : ['https', 'http'],
   /*
   openapi: "3.0.0",
   servers: [
