@@ -34,7 +34,7 @@ passport
     new Strategy({
       clientID: String(process.env.GITHUB_CLIENT_ID),
       clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
-      callbackURL: process.env.APP_API_URL + '/v1/auth/github/callback'
+      callbackURL: process.env.APP_API_URL + '/auth/github/callback'
     },
       async function (accessToken, refreshToken, profile, cb) {
         const profileGitHub = profile as ProfileGitHub;
