@@ -12,7 +12,7 @@ export default {
     const links = stored.map(({ link }) => link)
     const available = [...names, ...links]
 
-    const { data: source } = await axios.get('https://siteplaceholder.herokuapp.com/tech-source/channels/br?url=https%3A%2F%2Fgithub.com%2Fcarolcodes%2Fvideos-pt.br-tecnologia')
+    const { data: source } = await axios.get('https://siteplaceholder.herokuapp.com/v1/tech-source/channels/br?url=https%3A%2F%2Fgithub.com%2Fcarolcodes%2Fvideos-pt.br-tecnologia')
     const toAdd = source.filter(({ link, title }) => !available.includes(link) && !available.includes(title))
 
     for (let i = 0; i < toAdd.length; i++) {
@@ -22,7 +22,8 @@ export default {
       const categoryFormatted = category.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
 
       const params = { params: { url: link } }
-      const { data: about } = await axios.get('https://siteplaceholder.herokuapp.com/tech-source/yt/about', params)
+      const { data: about } = await axios.get('https://siteplaceholder.herokuapp.com/v1/tech-source/yt/about', params)
+
       const { profileImage: avatar, userGithub: aboutUserGitHub } = about;
 
       let userGithub = undefined
