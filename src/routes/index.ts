@@ -18,6 +18,8 @@ import ChannelRefreshController from '../controllers/Channel/ChannelRefreshContr
 import FollowController from '../controllers/Channel/FollowController';
 import IgnoreController from '../controllers/Channel/IgnoreController';
 
+import SearchController from '../controllers/Search/SearchController';
+
 const routes = express.Router()
 
 routes.get('/', (req, res) => {
@@ -83,6 +85,18 @@ routes.get('/video/:idYoutubeWatch', VideoController.show
   /* #swagger.responses[200] = {
     schema: { $ref: "#/definitions/Video" },
   } */
+)
+routes.get('/search', SearchController.show
+  // #swagger.tags = ['Search']
+  // #swagger.summary = 'Search videos, channels'
+  /* #swagger.parameters['q'] = {
+    in: 'query',
+    description: 'Search Query',
+    type: 'string',
+  } */
+  /* #swagger.responses[200] = {
+    schema: { $ref: "#/definitions/SearchResult" }
+} */
 )
 
 routes.use(socialLoginGithub);

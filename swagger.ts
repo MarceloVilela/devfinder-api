@@ -127,6 +127,14 @@ const doc = {
       "channel_url": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg",
       "thumbnail": "https://i.ytimg.com/vi/Cz55Jmhfw84/hqdefault.jpg?sqp=-oaymwEYCNIBEHZIVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAJKxcxvZ5M93JVuHMYkFF9KWlgnw",
     },
+    SearchResult: {
+      "value": "ifNSDGgBV94",
+      "label": "Mayk Brito, Student Experience at Rocketseat | Alumni 09",
+      "type": "video"
+    },
+    ArrayOfSearchResult: [
+      { $ref: "#/definitions/SearchResult" }
+    ],
     AppInfo: {
       "appname": "DevFinder"
     }

@@ -251,6 +251,31 @@
         }
       }
     },
+    "/search": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Search videos, channels",
+        "description": "",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string",
+            "description": "Search Query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/SearchResult"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
         "tags": [
@@ -651,10 +676,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Created",
             "schema": {
               "$ref": "#/definitions/Video"
-            }
+            },
+            "description": "Created"
           }
         },
         "security": [
@@ -968,6 +993,29 @@
           "type": "string",
           "example": "https://i.ytimg.com/vi/Cz55Jmhfw84/hqdefault.jpg?sqp=-oaymwEYCNIBEHZIVfKriqkDCwgBFQAAiEIYAXAB&rs=AOn4CLAJKxcxvZ5M93JVuHMYkFF9KWlgnw"
         }
+      }
+    },
+    "SearchResult": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "example": "ifNSDGgBV94"
+        },
+        "label": {
+          "type": "string",
+          "example": "Mayk Brito, Student Experience at Rocketseat | Alumni 09"
+        },
+        "type": {
+          "type": "string",
+          "example": "video"
+        }
+      }
+    },
+    "ArrayOfSearchResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SearchResult"
       }
     },
     "AppInfo": {
