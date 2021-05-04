@@ -26,8 +26,12 @@ export default {
     })
 
     if (videoExists) {
-      throw new Error(`video(${title}) already exists`)
+      //throw new Error(`video(${title}) already exists`)
     }
+
+    const status = videoExists
+      ? 409 //"409 Conflict" is the best existing answer code
+      : 201;
 
     const channel_id = channelExists._id;
 
@@ -37,11 +41,15 @@ export default {
       thumbnailFormatted = `https://i.ytimg.com/vi/${watch_id}/hqdefault.jpg`
     }
 
+    if (videoExists) {
+      return res.status(status).json(videoExists);
+    }
+
     const video = await Video.create(
       { title, url, channel_id, channel, channel_url, channel_icon, thumbnail: thumbnailFormatted, viewnum, date }
     )
 
-    return res.status(201).json(video);
+    return res.status(status).json(video);
   },
 
   async show(req: Request, res: Response) {
