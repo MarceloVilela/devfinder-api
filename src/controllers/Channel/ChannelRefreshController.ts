@@ -12,7 +12,9 @@ export default {
     const links = stored.map(({ link }) => link)
     const available = [...names, ...links]
 
-    const { data: source } = await axios.get('https://siteplaceholder.herokuapp.com/v1/tech-source/channels/br?url=https%3A%2F%2Fgithub.com%2Fcarolcodes%2Fvideos-pt.br-tecnologia')
+    const url = 'https://github.com/lucasgomide/videos-pt.br-tecnologia'
+    const configRequestChannels = { params: { url } }
+    const { data: source } = await axios.get(process.env.APP_APIPLACEHOLDER_URL + '/tech-source/channels/br', configRequestChannels)
     const toAdd = source.filter(({ link, title }) => !available.includes(link) && !available.includes(title))
 
     for (let i = 0; i < toAdd.length; i++) {
@@ -21,8 +23,8 @@ export default {
       const { title: name, link, description, category, tags } = element
       const categoryFormatted = category.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
 
-      const params = { params: { url: link } }
-      const { data: about } = await axios.get('https://siteplaceholder.herokuapp.com/v1/tech-source/yt/about', params)
+      const configRequestAbout = { params: { url: link } }
+      const { data: about } = await axios.get(process.env.APP_APIPLACEHOLDER_URL + '/tech-source/yt/about', configRequestAbout)
 
       const { profileImage: avatar, userGithub: aboutUserGitHub } = about;
 
