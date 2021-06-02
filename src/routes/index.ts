@@ -74,6 +74,21 @@ routes.get('/feed/trending', TrendingController.index
     schema: { $ref: "#/definitions/PaginationVideo" },
   } */
 )
+routes.get('/feed/channel', VideoController.index
+  // #swagger.tags = ['Video']
+  // #swagger.summary = 'Get all videos from a channel'
+  /* #swagger.parameters['channel_name'] = {
+    in: 'query',
+    type: 'string',
+  } */
+  /* #swagger.parameters['page'] = {
+    in: 'query',
+    type: 'string',
+  } */
+  /* #swagger.responses[200] = {
+    schema: { $ref: "#/definitions/PaginationVideo" },
+  } */
+)
 routes.get('/video/:idYoutubeWatch', VideoController.show
   // #swagger.tags = ['Video']
   // #swagger.summary = 'Get a vídeo by the id contained in the link'

@@ -52,6 +52,39 @@ export default {
     return res.status(status).json(video);
   },
 
+  async index(req: Request, res: Response) {
+    const { page, channel_name } = req.query;
+
+    const channel = await Channel.findOne(
+      { name: new RegExp(String(channel_name), 'i') }
+    );
+
+    console.log(channel_name)
+    let result = null;
+
+    const options = {
+      sort: { createdAt: -1 },
+      limit: 30,
+      page: page ? page : 1,
+    };
+
+    const query = {
+      $or: [
+        { channel_url: channel.link },
+        { channel: channel.name }
+      ]
+    };
+
+    result = await Video.paginate(
+      query,
+      options
+    );
+
+    const { docs, totalDocs: total, limit: itemsPerPage } = result;
+
+    return res.json({ docs, total, itemsPerPage })
+  },
+
   async show(req: Request, res: Response) {
     const { idYoutubeWatch } = req.params;
     const filter = {

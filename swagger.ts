@@ -12,7 +12,7 @@ const doc = {
   },
   host: process.env.APP_API_HOST,
   basePath: "/v1",
-  schemes: process.env.APP_API_HOST?.includes('https') ? ['https', 'http'] : ['https', 'http'],
+  schemes: ['https', 'http'],
   /*
   openapi: "3.0.0",
   servers: [

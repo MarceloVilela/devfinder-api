@@ -5,7 +5,7 @@
     "title": "DevFinder",
     "description": "DevFinder api"
   },
-  "host": "finderdev.herokuapp.com",
+  "host": "api2-devfinder.herokuapp.com",
   "basePath": "/v1",
   "tags": [],
   "schemes": [
@@ -211,6 +211,35 @@
         "parameters": [
           {
             "name": "page",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PaginationVideo"
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/feed/channel": {
+      "get": {
+        "tags": [
+          "Video"
+        ],
+        "summary": "Get all videos from a channel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "channel_name",
             "in": "query",
             "type": "string"
           }
