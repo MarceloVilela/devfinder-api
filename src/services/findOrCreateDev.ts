@@ -19,6 +19,10 @@ const findOrCreateDev = async ({ user, name = '', bio = '', avatar = '' }: User)
   if (!name || !bio || !avatar) {
     const { data } = await axios.get(`https://api.github.com/users/${user}`);
     ({ name, avatar_url: avatar, bio } = data);
+
+    if(!name){
+      name = user;
+    }
   }
 
   const dev = await Dev.create({
