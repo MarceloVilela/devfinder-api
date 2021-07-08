@@ -1,3 +1,5 @@
+import { string } from "@hapi/joi";
+
 const { Schema, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
@@ -38,5 +40,18 @@ const VideoSchema = new Schema({
 })
 
 VideoSchema.plugin(mongoosePaginate);
- 
-export default model('Video',  VideoSchema);
+
+export default model('Video', VideoSchema);
+
+export type TVideo = {
+  title: string;
+  url: string;
+  channel_id: string;
+  channel: string;
+  channel_url: string;
+  channel_icon: string;
+  thumbnail: string;
+  viewnum: number;
+  date: Date;
+
+}

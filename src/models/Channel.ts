@@ -30,3 +30,15 @@ const ChannelSchema = new Schema({
 })
 
 export default model('Channel', ChannelSchema)
+
+export type TChannel = {
+  name: string;
+  link: string;
+  avatar: string;
+  userGithub: string;
+  description: string;
+  category: string;
+  tags: string[];
+  likes: string[];
+  deslikes: string[];
+};

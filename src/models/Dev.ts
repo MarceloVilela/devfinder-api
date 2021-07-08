@@ -37,5 +37,16 @@ const DevSchema = new Schema({
 
 
 DevSchema.plugin(mongoosePaginate);
- 
+
 export default model('Dev',  DevSchema);
+
+export type TDev = {
+  name: string;
+  user: string;
+  bio: string;
+  avatar: string;
+  likes: string[];
+  deslikes: string[];
+  follow: string[];
+  ignore: string[];
+}

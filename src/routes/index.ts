@@ -10,7 +10,9 @@ import LikeController from '../controllers/Dev/LikeController';
 import DislikeController from '../controllers/Dev/DislikeController';
 
 import VideoController from '../controllers/Video/VideoController';
+import VideoRefreshController from '../controllers/Video/VideoRefreshController';
 import TrendingController from '../controllers/Video/TrendingController';
+import FeedController from '../controllers/Description/FeedController';
 import SubscriptionsController from '../controllers/Video/SubscriptionsController';
 
 import ChannelController from '../controllers/Channel/ChannelController';
@@ -66,6 +68,8 @@ routes.get('/channels/:searchQuery', ChannelController.show
     schema: { $ref: "#/definitions/Channel" },
   } */
 )
+
+routes.get('/description/feed', FeedController.index);
 
 routes.get('/feed/trending', TrendingController.index
   // #swagger.tags = ['Video']
@@ -284,5 +288,6 @@ routes.post('/video', VideoController.store
     schema: { $ref: "#/definitions/Video" }
 } */
 )
+routes.post('/video/refresh', VideoRefreshController.store);
 
 export default routes
