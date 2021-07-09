@@ -5,7 +5,7 @@ import Dev from '../../models/Dev';
 export default {
   async index(req: Request, res: Response) {
     const userId = req.user?.id;
-    const { page } = req.query;
+    const { page, user: userIdentifier } = req.query;
 
     let result = null;
 
@@ -15,8 +15,10 @@ export default {
       page: page ? page : 1
     };
 
-    if (userId) {
-      const loggedDev = await Dev.findById(userId)
+    if (userId || userIdentifier) {
+      const loggedDev = userId
+        ? await Dev.findById(userId)
+        : await Dev.findOne({ user: userIdentifier })
 
       if (!loggedDev) {
         throw new Error(`user ${userId} not found`)
