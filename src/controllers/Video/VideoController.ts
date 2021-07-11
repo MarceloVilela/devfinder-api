@@ -15,7 +15,11 @@ export default {
     })
 
     if (!channelExists) {
-      throw new Error(`channel(${channel}) not found, for: ${title}`)
+      //throw new Error(`channel(${channel}) not found, for: ${title}`)
+      return res.status(400).json({
+        errorMessage: `channel(${channel}) not found, for: ${title}`,
+        title, url, channel, channel_url, channel_icon, thumbnail, viewnum, date
+      });
     }
 
     const videoExists = await Video.findOne({

@@ -11,7 +11,11 @@ export default {
       { headers: { 'Content-Type': 'application/json', 'X-Master-Key': process.env.JSONBIN_API_KEY, } }
     );
 
+    //console.log('toAdd: ', toAdd.length);
+
     const videosAdded = [];
+    const videosFounded = [];
+    const errors = [];
 
     for (let i = 0; i < toAdd.length; i++) {
       const { title, url, channel_name, channel_url, thumbnail } = toAdd[i];
@@ -24,21 +28,28 @@ export default {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
+        //console.log('SUCCESS:', title);
         videosAdded.push({ title, url, channel_name, channel_url, thumbnail });
       } catch (error) {
-        if (error.response) {
+        if (error.response.status && error.response.status === 409) {
           // Request made and server responded
-          console.log(
-            `STATUS(${error.response.status}) => `,
-            error.response.data.message ? error.response.data.message : error.response.data
-          );
+          //console.log(`FOUND(${error.response.status}):`);
+          //console.table(error.response.data);
+          videosFounded.push(error.response.data);
+        }
+        else if (error.response) {
+          // Request made and server responded
+          //console.log(`ERROR_STATUS(${error.response.status}):`);
+          //console.table(error.response.data);
+          errors.push(error.response.data);
         } else {
-          console.log(error);
+          //console.log(error);
+          errors.push(error);
         }
       }
 
     };
 
-    return res.json(videosAdded);
+    return res.json({ errors, videosAdded, videosFounded });
   }
 }
