@@ -26,24 +26,26 @@ export default {
     const newLine = "<br />";
 
     const generateLegend = (channels: TChannel[], trend: TVideo[]) => {
-      const channelAddedLegend = channels.map(({ tags, name }) => `https://devfinder.vercel.app/channel | Adicionado o canal: ${name} | ${tags.map(tag => '#' + tag).join(' ')}`)
-      const descriptionChannels = channelAddedLegend.join(newLine);
+      const titles = trend.map(({ title, channel }) => `${channel}: ${title}`).join(newLine);
 
-      //
-      //
-      //
       let hashtags = <String[]>[];
-      //trend.map(({channel}) => channels.filter(({name}) => name === channel).length === 1 ? channels.filter(({name}) => name === channel)[0]['tags'] : []);
+
+      trend.map(({ channel }) => channels.filter(({ name }) => name === channel).length === 1 ? hashtags.push(...channels.filter(({ name }) => name === channel)[0]['tags']) : []);
       trend.map(({ channel }) => channels.filter(({ name }) => name === channel).length === 1 ? hashtags.push(...channels.filter(({ name }) => name === channel)[0]['tags']) : []);
       const hashtagsLegend = [...new Set(hashtags.filter(hashtag => typeof hashtag === 'string').map(hashtag => `#${hashtag.replace(/\s/g, '-')}`))]
-      const descriptionTrend = `https://devfinder.vercel.app | Adicionados novos vídeos | ${newLine} ${hashtagsLegend.join(newLine)}`;
 
-      return { descriptionChannels, descriptionTrend };
+      let descriptionTrend = `https://devfinder.vercel.app | Adicionados novos vídeos | ${newLine}${newLine}`;
+      descriptionTrend += `${titles}${newLine}${newLine}`;
+      descriptionTrend += `Repositório da aplicação web: https://github.com/marcelovilela/devfinder-next ${newLine}${newLine}`
+      descriptionTrend += `Meu github: https://github.com/marcelovilela ${newLine}${newLine}`;
+      descriptionTrend += `${hashtagsLegend.join(newLine)}`;
+
+      return { descriptionTrend };
     }
 
     const { dataChannels, dataTrending } = await requestContent();
-    const { descriptionChannels, descriptionTrend } = generateLegend(dataChannels, dataTrending);
+    const { descriptionTrend } = generateLegend(dataChannels, dataTrending);
 
-    return res.send(`${descriptionTrend} ${newLine}${newLine}${newLine} ${descriptionChannels}`);
+    return res.send(`${descriptionTrend}`);
   }
 }

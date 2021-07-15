@@ -12,7 +12,8 @@ import DislikeController from '../controllers/Dev/DislikeController';
 import VideoController from '../controllers/Video/VideoController';
 import VideoRefreshController from '../controllers/Video/VideoRefreshController';
 import TrendingController from '../controllers/Video/TrendingController';
-import FeedController from '../controllers/Description/FeedController';
+import DescriptionFeedController from '../controllers/Description/FeedController';
+import DecriptionCategoryController from '../controllers/Description/CategoryController';
 import SubscriptionsController from '../controllers/Video/SubscriptionsController';
 
 import ChannelController from '../controllers/Channel/ChannelController';
@@ -69,7 +70,9 @@ routes.get('/channels/:searchQuery', ChannelController.show
   } */
 )
 
-routes.get('/description/feed', FeedController.index);
+routes.get('/description/feed', DescriptionFeedController.index);
+
+routes.get('/description/category', DecriptionCategoryController.index);
 
 routes.get('/feed/trending', TrendingController.index
   // #swagger.tags = ['Video']
