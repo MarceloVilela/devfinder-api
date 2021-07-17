@@ -6,10 +6,14 @@ export default {
   async store(req: Request, res: Response) {
     //const { data: toAdd } = await axios.get(process.env.APP_APIFEED_URL + '/feed/subscriptions?auth_method=stored');
 
+    /*
     const { data: { record: toAdd } } = await axios.get(
       'https://api.jsonbin.io/v3/b/' + process.env.JSONBIN_ID_SUBS,
       { headers: { 'Content-Type': 'application/json', 'X-Master-Key': process.env.JSONBIN_API_KEY, } }
     );
+    */
+
+    const { record: toAdd } = req.body;
 
     //console.log('toAdd: ', toAdd.length);
 
