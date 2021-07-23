@@ -26,11 +26,13 @@ export default {
     const newLine = "<br />";
 
     const generateLegend = (channels: TChannel[], trend: TVideo[]) => {
-      const titles = trend.map(({ title, channel }) => `${channel}: ${title}`).join(newLine);
+      //const titles = trend.map(({ title, channel }) => `${channel}: ${title}`).join(newLine);
+      const channelsNames = trend.map(({ channel }) => channel);
+      const channelsNamesSet = [...new Set(channelsNames)];
+      const titles = channelsNamesSet.join(newLine);
 
       let hashtags = <String[]>[];
 
-      trend.map(({ channel }) => channels.filter(({ name }) => name === channel).length === 1 ? hashtags.push(...channels.filter(({ name }) => name === channel)[0]['tags']) : []);
       trend.map(({ channel }) => channels.filter(({ name }) => name === channel).length === 1 ? hashtags.push(...channels.filter(({ name }) => name === channel)[0]['tags']) : []);
       const hashtagsLegend = [...new Set(hashtags.filter(hashtag => typeof hashtag === 'string').map(hashtag => `#${hashtag.replace(/\s/g, '-')}`))]
 
