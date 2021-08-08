@@ -11,6 +11,7 @@ export default {
       $or: [
         { name: { $eq: channel } },
         { link: { $eq: channel_url } },
+        { alternativeLink: { $eq: channel_url } },
       ],
     })
 
