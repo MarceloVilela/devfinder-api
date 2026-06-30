@@ -4,8 +4,19 @@ import Channel from '../../models/Channel';
 
 export default {
   async store(req: Request, res: Response) {
-    const { title, url, channel, channel_url, channel_icon, thumbnail, viewnum, date } = req.body
+    const {
+      title,
+      url: urlVideo,
+      channel,
+      channel_url,
+      channel_icon,
+      thumbnail: thumbnailVideo,
+      viewnum,
+      date,
+    } = req.body;
 
+    const url = urlVideo.replace(/&pp=[^&]*/g, '');
+    const thumbnail = thumbnailVideo.replace(/&pp=[^&]*/g, '');
 
     const channelExists = await Channel.findOne({
       $or: [
@@ -13,13 +24,20 @@ export default {
         { link: { $eq: channel_url } },
         { alternativeLink: { $eq: channel_url } },
       ],
-    })
+    });
 
     if (!channelExists) {
       //throw new Error(`channel(${channel}) not found, for: ${title}`)
       return res.status(400).json({
         errorMessage: `channel(${channel}) not found, for: ${title}`,
-        title, url, channel, channel_url, channel_icon, thumbnail, viewnum, date
+        title,
+        url,
+        channel,
+        channel_url,
+        channel_icon,
+        thumbnail,
+        viewnum,
+        date,
       });
     }
 
@@ -28,7 +46,7 @@ export default {
         //{ title: { $eq: title } },
         { url: { $eq: url } },
       ],
-    })
+    });
 
     if (videoExists) {
       //throw new Error(`video(${title}) already exists`)
@@ -42,17 +60,28 @@ export default {
 
     let thumbnailFormatted = thumbnail;
     if (!thumbnail) {
-      const watch_id = url.split('=')[1]
-      thumbnailFormatted = `https://i.ytimg.com/vi/${watch_id}/hqdefault.jpg`
+      const watch_id = url.split('=')[1];
+      thumbnailFormatted = `https://i.ytimg.com/vi/${watch_id}/hqdefault.jpg`;
     }
 
     if (videoExists) {
-      return res.status(status).json(videoExists);
+      return res.status(status).json({
+        errorMessage: `video(${title}) already exists`,
+        ...videoExists,
+      });
     }
 
-    const video = await Video.create(
-      { title, url, channel_id, channel, channel_url, channel_icon, thumbnail: thumbnailFormatted, viewnum, date }
-    )
+    const video = await Video.create({
+      title,
+      url,
+      channel_id,
+      channel,
+      channel_url,
+      channel_icon,
+      thumbnail: thumbnailFormatted,
+      viewnum,
+      date,
+    });
 
     return res.status(status).json(video);
   },
@@ -60,11 +89,11 @@ export default {
   async index(req: Request, res: Response) {
     const { page, channel_name } = req.query;
 
-    const channel = await Channel.findOne(
-      { name: new RegExp(String(channel_name), 'i') }
-    );
+    const channel = await Channel.findOne({
+      name: new RegExp(String(channel_name), 'i'),
+    });
 
-    console.log(channel_name)
+    console.log(channel_name);
     let result = null;
 
     const options = {
@@ -74,31 +103,24 @@ export default {
     };
 
     const query = {
-      $or: [
-        { channel_url: channel.link },
-        { channel: channel.name }
-      ]
+      $or: [{ channel_url: channel.link }, { channel: channel.name }],
     };
 
-    result = await Video.paginate(
-      query,
-      options
-    );
+    result = await Video.paginate(query, options);
 
     const { docs, totalDocs: total, limit: itemsPerPage } = result;
 
-    return res.json({ docs, total, itemsPerPage })
+    return res.json({ docs, total, itemsPerPage });
   },
 
   async show(req: Request, res: Response) {
     const { idYoutubeWatch } = req.params;
     const filter = {
-      url: new RegExp(idYoutubeWatch)
+      url: new RegExp(idYoutubeWatch),
     };
 
-    const video = await Video.findOne(filter)
+    const video = await Video.findOne(filter);
 
     return res.json(video);
   },
-
-}
+};

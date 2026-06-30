@@ -1,0 +1,204 @@
+@baseUrl = http://localhost:3333/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMjMyMjQxNGUxMjQwNTQxNDgyM2ZkMSIsImlhdCI6MTc3Njk0NTY4NiwiZXhwIjoxNzc3NTUwNDg2fQ.KbZ-MuoRRJRfjjqonTjOLU79-9y6cRHiRuqYOa3GN_8
+@username = marcelovilela
+@channelName = Rocketseat
+@videoId = 6zMK8gFablA
+
+# =============================================
+# APP
+# =============================================
+
+# @name get_app_info
+GET {{baseUrl}}/
+
+###
+
+# =============================================
+# DEV
+# =============================================
+
+# @name get_devs
+GET {{baseUrl}}/devs?page=1
+
+###
+
+# @name get_dev_by_username
+GET {{baseUrl}}/devs/{{username}}
+
+###
+
+# @name create_dev
+POST {{baseUrl}}/devs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "username": "marcelovilela"
+}
+
+###
+
+# @name get_me
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================
+# CHANNEL
+# =============================================
+
+# @name get_channels
+GET {{baseUrl}}/channels
+
+###
+
+# @name get_channel_by_name_or_link
+GET {{baseUrl}}/channels/{{channelName}}
+
+###
+
+# @name create_channel
+POST {{baseUrl}}/channels
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Rocketseat",
+  "link": "https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg",
+  "description": "O canal da Rocketseat lotado de conteudo para pessoas desenvolvedoras.",
+  "tags": [
+    "javascript",
+    "react",
+    "react native"
+  ],
+  "category": "Desenvolvimento Front-End"
+}
+
+###
+
+# @name refresh_channels
+POST {{baseUrl}}/channels/refresh
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================
+# VIDEO
+# =============================================
+
+# @name get_video_by_id
+GET {{baseUrl}}/video/{{videoId}}
+
+###
+
+# @name create_video
+POST {{baseUrl}}/video
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "IA que le Layout? Integrei OpenCode + Pencil para criar este App Next.js",
+  "url": "https://www.youtube.com/watch?v=6zMK8gFablA",
+  "thumbnail": "https://i.ytimg.com/vi/6zMK8gFablA/hq720.jpg",
+  "channel": "Rocketseat",
+  "channel_url": "https://www.youtube.com/@rocketseat"
+}
+
+###
+
+# =============================================
+# FEED
+# =============================================
+
+# @name get_feed_trending
+GET {{baseUrl}}/feed/trending?page=1
+Authorization: Bearer {{token}}
+
+###
+
+# @name get_feed_by_channel
+GET {{baseUrl}}/feed/channel?page=1&channel_name={{channelName}}
+
+###
+
+# @name get_feed_subscriptions
+GET {{baseUrl}}/feed/subscriptions?page=1
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================
+# SEARCH
+# =============================================
+
+# @name search
+GET {{baseUrl}}/search?q=rocketseat
+
+###
+
+# =============================================
+# LIKES & DISLIKES - DEVS
+# =============================================
+
+# @name like_dev
+POST {{baseUrl}}/likes/devs/{{username}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name remove_like_dev
+DELETE {{baseUrl}}/likes/devs/{{username}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name dislike_dev
+POST {{baseUrl}}/dislikes/devs/{{username}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name remove_dislike_dev
+DELETE {{baseUrl}}/dislikes/devs/{{username}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name get_liked_devs
+GET {{baseUrl}}/likes/devs
+Authorization: Bearer {{token}}
+
+###
+
+# @name get_disliked_devs
+GET {{baseUrl}}/dislikes/devs
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================
+# LIKES & DISLIKES - CHANNELS
+# =============================================
+
+# @name like_channel
+POST {{baseUrl}}/likes/channels/{{channelName}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name remove_like_channel
+DELETE {{baseUrl}}/likes/channels/{{channelName}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name dislike_channel
+POST {{baseUrl}}/dislikes/channels/{{channelName}}
+Authorization: Bearer {{token}}
+
+###
+
+# @name remove_dislike_channel
+DELETE {{baseUrl}}/dislikes/channels/{{channelName}}
+Authorization: Bearer {{token}}

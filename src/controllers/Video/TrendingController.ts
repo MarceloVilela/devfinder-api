@@ -12,37 +12,29 @@ export default {
     const options = {
       sort: { createdAt: -1 },
       limit: 30,
-      page: page ? page : 1
+      page: page ? page : 1,
     };
 
     if (userId || userIdentifier) {
       const loggedDev = userId
         ? await Dev.findById(userId)
-        : await Dev.findOne({ user: userIdentifier })
+        : await Dev.findOne({ user: userIdentifier });
 
       if (!loggedDev) {
-        throw new Error(`user ${userId} not found`)
+        throw new Error(`user ${userId} not found`);
       }
 
       const query = {
-        $and: [
-          { channel_id: { $nin: loggedDev.ignore } },
-        ],
+        $and: [{ channel_id: { $nin: loggedDev.ignore } }],
       };
 
-      result = await Video.paginate(
-        query,
-        options
-      );
-    }
-    else {
-      result = await Video.paginate(
-        {},
-        options
-      );
+      result = await Video.paginate(query, options);
+    } else {
+      result = await Video.paginate({}, options);
     }
 
     const { docs, totalDocs: total, limit: itemsPerPage } = result;
-    return res.json({ docs, total, itemsPerPage })
-  }
-}
+
+    return res.json({ docs, total, itemsPerPage });
+  },
+};
