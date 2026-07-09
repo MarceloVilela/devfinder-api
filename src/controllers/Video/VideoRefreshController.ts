@@ -7,6 +7,18 @@ type AddResult =
   | { status: 'duplicate'; data: unknown }
   | { status: 'error'; data: unknown };
 
+// hq720_custom_N thumbnails are frame-grabs signed by a `sqp`/`rs` query pair
+// and often render broken; hqdefault is the stable fallback for the same video.
+const CUSTOM_THUMBNAIL_REGEX = /\/vi\/([^/]+)\/hq720_custom_\d+\.jpg/;
+
+function resolveThumbnail(thumbnail: string, url: string): string {
+  const customMatch = thumbnail.match(CUSTOM_THUMBNAIL_REGEX);
+  if (thumbnail && !customMatch) return thumbnail;
+
+  const watch_id = customMatch ? customMatch[1] : url.split('=')[1];
+  return `https://i.ytimg.com/vi/${watch_id}/hqdefault.jpg`;
+}
+
 async function addVideo(item: {
   title: string;
   url: string;
@@ -42,11 +54,7 @@ async function addVideo(item: {
     };
   }
 
-  let thumbnailFormatted = thumbnail;
-  if (!thumbnail) {
-    const watch_id = url.split('=')[1];
-    thumbnailFormatted = `https://i.ytimg.com/vi/${watch_id}/hqdefault.jpg`;
-  }
+  const thumbnailFormatted = resolveThumbnail(thumbnail, url);
 
   const video = await Video.create({
     title,
