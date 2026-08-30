@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import passport, { Profile } from 'passport';
 import { Strategy } from 'passport-github';
 
-import authConfig from '../config/auth';
+import authConfig, { cookieOptions } from '../config/auth';
 import findOrCreateDev from '../services/findOrCreateDev';
 
 interface ProfileGitHub extends Strategy.Profile {
@@ -64,11 +64,26 @@ routes.get('/auth/github/callback',
       expiresIn: authConfig.expiresIn,
     })
 
-    return res.redirect(process.env.APP_WEB_URL + `/login?id=${id}&token=${token}`)
+    // Sessão via cookie httpOnly, nunca no token/query string — inacessível a JS/XSS no
+    // frontend. O frontend descobre a sessão chamando GET /me (o cookie vai junto sozinho).
+    res.cookie(authConfig.cookie.name, token, { ...cookieOptions, maxAge: authConfig.cookie.maxAge })
+
+    return res.redirect(process.env.APP_WEB_URL + '/login')
   }
   // #swagger.ignore = true
   // #swagger.tags = ['Auth']
   // #swagger.summary = 'Handles the response of social authentication - github'
+);
+
+routes.post('/auth/logout',
+  function (req: Request, res: Response) {
+    res.clearCookie(authConfig.cookie.name, cookieOptions)
+
+    return res.status(204).end()
+  }
+  // #swagger.ignore = true
+  // #swagger.tags = ['Auth']
+  // #swagger.summary = 'Clears the session cookie'
 );
 
 export default routes

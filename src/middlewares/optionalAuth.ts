@@ -6,13 +6,11 @@ import authConfig from '../config/auth';
 import { TokenPayload } from './auth';
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies?.[authConfig.cookie.name] || req.headers.authorization?.split(' ')[1];
 
-  if (!authHeader) {
+  if (!token) {
     return next();
   }
-
-  const [, token] = authHeader.split(' ');
 
   try {
     const decoded = await promisify(jwt.verify)(token, String(authConfig.secret)) as TokenPayload;

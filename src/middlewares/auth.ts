@@ -9,13 +9,13 @@ export interface TokenPayload {
 }
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  // Cookie httpOnly é o caminho real (browser/devfinder-next); o header Authorization fica
+  // como fallback para o Swagger UI (/v1/doc, "Authorize" manual) e chamadas server-to-server.
+  const token = req.cookies?.[authConfig.cookie.name] || req.headers.authorization?.split(' ')[1];
 
-  if (!authHeader) {
+  if (!token) {
     return res.status(401).json({ error: 'Token not provided.' });
   }
-
-  const [, token] = authHeader.split(' ');
 
   try {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret) as TokenPayload;
