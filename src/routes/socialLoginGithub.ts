@@ -34,7 +34,12 @@ passport
     new Strategy({
       clientID: String(process.env.GITHUB_CLIENT_ID),
       clientSecret: String(process.env.GITHUB_CLIENT_SECRET),
-      callbackURL: process.env.APP_API_URL + '/v1/auth/github/callback'
+      // GITHUB_CALLBACK_URL (nova, opcional) permite apontar o callback pro proxy reverso do
+      // frontend (devfinder-next/review-human.md #2) sem mexer em APP_API_URL, que
+      // provavelmente serve outros usos. Sem essa env var setada, comportamento idêntico ao de
+      // antes (fallback pro cálculo original) — inerte até alguém configurar
+      // GITHUB_CALLBACK_URL no Render.
+      callbackURL: process.env.GITHUB_CALLBACK_URL || (process.env.APP_API_URL + '/v1/auth/github/callback')
     },
       async function (accessToken, refreshToken, profile, cb) {
         const profileGitHub = profile as ProfileGitHub;
