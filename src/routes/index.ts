@@ -11,6 +11,7 @@ import DislikeController from '../controllers/Dev/DislikeController';
 
 import VideoController from '../controllers/Video/VideoController';
 import VideoRefreshController from '../controllers/Video/VideoRefreshController';
+import ScreenshotRefreshController from '../controllers/Screenshot/ScreenshotRefreshController';
 import TrendingController from '../controllers/Video/TrendingController';
 import DescriptionFeedController from '../controllers/Description/FeedController';
 import DecriptionCategoryController from '../controllers/Description/CategoryController';
@@ -292,5 +293,14 @@ routes.post('/video', VideoController.store
 } */
 )
 routes.post('/video/refresh', VideoRefreshController.store);
+
+routes.post('/screenshot/refresh', ScreenshotRefreshController.store
+  // #swagger.tags = ['Video']
+  // #swagger.summary = 'Dispatch the screenshot GitHub Action (youtube-feed-subscriptions)'
+  // #swagger.security = [{"apiKeyAuth": []}]
+  /* #swagger.responses[202] = {
+    description: 'Screenshot workflow dispatched'
+} */
+)
 
 export default routes
