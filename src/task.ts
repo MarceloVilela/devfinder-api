@@ -46,6 +46,13 @@ async function main() {
     //console.error('Erros:', JSON.stringify(errors, null, 2));
     //process.exit(1);
   }
+
+  await axios.post(
+    `${APP_API_URL}/v1/screenshot/refresh`,
+    {},
+    { headers: { Authorization: `Bearer ${APP_API_TOKEN}` } },
+  );
+  console.log('Screenshot workflow disparado');
 }
 
 main()
